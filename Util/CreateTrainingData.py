@@ -21,7 +21,7 @@ def Convert(g):
     #       maxlength = len(game)
     #   if game.shape[0] > 600:
     #       maxlength = len(game)
-    gamesTensor = np.zeros((len(g), 8, 8, 600), dtype='float64')
+    gamesTensor = np.zeros((len(g), 1, 8, 8, 400))
 
     # gamesTensor[tensorIndex (0 - len(g), positionRank (0 - 7), positionFile (0 - 7), positionNumber (0 - len(currentGame))
     tensorIndex = 0
@@ -41,7 +41,10 @@ def Convert(g):
           positionFile = 0
           for file in rank:
             #print('tensorIndex = ',tensorIndex,' positionFile = ', positionFile, ' positionRank = ', positionRank, ' positionNumber = ', positionNumber)
-            gamesTensor[tensorIndex, positionRank, positionFile, positionNumber] = game[positionNumber, positionRank, positionFile]
+            if (game[positionNumber, positionRank, positionFile]<0):
+                gamesTensor[tensorIndex,0, positionRank, positionFile, positionNumber] = 1/game[positionNumber, positionRank, positionFile]
+            else :
+                gamesTensor[tensorIndex, 0, positionRank, positionFile, positionNumber] = game[positionNumber, positionRank, positionFile]
             positionFile += 1
           positionRank += 1
         positionNumber += 1
@@ -50,7 +53,7 @@ def Convert(g):
     return gamesTensor
 
 def ConvertLabels(l):
-    convertedLabels = np.full((len(l), 8, 8, 601), 1)
+    convertedLabels = np.full((len(l), 8, 8, 400), 1)
     i = 0
     for label in l:
         print('Label: ', int(label))
@@ -92,15 +95,15 @@ def Start():
     for game, label in training_data:
         X.append(game)
         y.append(label)
-    X = np.asarray(X,dtype=object)
+    X = np.asarray(X)
     y = np.asarray(y)
 
     X = Convert(X)
-    X = np.asarray(X,dtype=object)
+    X = np.asarray(X)
 
     print(X.shape)
     print(y.shape)
-    np.save('E:/Chess Games Downloaded/2022 Data/dataset.npy', X, allow_pickle = True)
-    np.save('E:/Chess Games Downloaded/2022 Data/labels.npy', y, allow_pickle = True)
+    np.save('E:/Chess Games Downloaded/2022 Data/fractions/dataset.npy', X, allow_pickle = True)
+    np.save('E:/Chess Games Downloaded/2022 Data/fractions/labels.npy', y, allow_pickle = True)
 
 Start()
