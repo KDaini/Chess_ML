@@ -42,9 +42,19 @@ def Convert(g):
           for file in rank:
             #print('tensorIndex = ',tensorIndex,' positionFile = ', positionFile, ' positionRank = ', positionRank, ' positionNumber = ', positionNumber)
             if (game[positionNumber, positionRank, positionFile]<0):
-                gamesTensor[tensorIndex,0, positionRank, positionFile, positionNumber] = 1/game[positionNumber, positionRank, positionFile]
+                if (game[positionNumber, positionRank, positionFile]==-1) :
+                    gamesTensor[tensorIndex,0, positionRank, positionFile, positionNumber] = -1/1.9
+                else :
+                    gamesTensor[tensorIndex, 0, positionRank, positionFile, positionNumber] = 1 / game[
+                        positionNumber, positionRank, positionFile]
+            elif (game[positionNumber, positionRank, positionFile] == 0):
+                gamesTensor[tensorIndex, 0, positionRank, positionFile, positionNumber] = 1
             else :
-                gamesTensor[tensorIndex, 0, positionRank, positionFile, positionNumber] = game[positionNumber, positionRank, positionFile]
+                if (game[positionNumber, positionRank, positionFile] == 1) :
+                    gamesTensor[tensorIndex, 0, positionRank, positionFile, positionNumber] = 1.9
+                else:
+                    gamesTensor[tensorIndex, 0, positionRank, positionFile, positionNumber] = game[
+                        positionNumber, positionRank, positionFile]
             positionFile += 1
           positionRank += 1
         positionNumber += 1
@@ -106,4 +116,4 @@ def Start():
     np.save('E:/Chess Games Downloaded/2022 Data/fractions/dataset.npy', X, allow_pickle = True)
     np.save('E:/Chess Games Downloaded/2022 Data/fractions/labels.npy', y, allow_pickle = True)
 
-Start()
+#Start()
