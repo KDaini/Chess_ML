@@ -28,7 +28,7 @@ currentGame = gamesFile.readline()  # get first line from file, get first game (
 # format)
 
 
-def generate_positions(bd, pos):
+def generate_positions(bd, pos, currentGame):
     color = 1
     for x in currentGame.split(' '):
         if (len(x) < 2) or ('.' in x) or ('-' in x) or (x.isdigit()):
@@ -170,7 +170,7 @@ while currentGame:
     else:
         folder = 'Other/'  # bad things happened
 
-    generate_positions(board, positions)  # use moves to generate all positions reached during the current game
+    generate_positions(board, positions, currentGame)  # use moves to generate all positions reached during the current game
     positionCopy = np.asarray(positions.copy())  # convert list to ndarray for saving
 
     # ********************************** IMPLEMENT ROTATION HERE *********************************** #
